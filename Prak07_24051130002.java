@@ -44,7 +44,6 @@ class DoubleLink {
 
     public void insertFirst(String nip, String nama) {
         if (cekNIP(nip)) {
-            // System.out.println("NIP sudah ada, tidak bisa ditambahkan!");
             return;
         }
         Node newNode = new Node(nip, nama);
@@ -59,7 +58,6 @@ class DoubleLink {
 
     public void insertLast(String nip, String nama) {
         if (cekNIP(nip)) {
-            // System.out.println("NIP sudah ada, tidak bisa ditambahkan!");
             return;
         }
         Node newNode = new Node(nip, nama);
@@ -72,51 +70,46 @@ class DoubleLink {
         last = newNode;
     }
 
-    public Node insertAfter(String nip, String nama) {
+    public void insertAfter(String nipAcuan, String nipBaru, String namaBaru) {
+        if (cekNIP(nipBaru)) return;
         Node current = first;
         while (current != null) {
-            if (current.nip.equals(nip)) {
-                break;
+            if (current.nip.equals(nipAcuan)) {
+                Node newNode = new Node(nipBaru, namaBaru);
+                newNode.next = current.next;
+                newNode.previous = current;
+                if (current.next != null) {
+                    current.next.previous = newNode;
+                } else {
+                    last = newNode;
+                }
+                current.next = newNode;
+                return;
             }
             current = current.next;
         }
-        if (current == null) {
-            System.out.println("NIP tidak ditemukan!");
-            return first;
-        }
-        Node newNode = new Node(nip, nama);
-        newNode.previous = current;
-        newNode.next = current.next;
-        current.next = newNode;
-        if (newNode.next != null) {
-            newNode.next.previous = newNode;
-        } 
-        current.next = newNode;
-        return first;
+        System.out.println("NIP acuan tidak ditemukan!");
     }
 
-    public Node insertBefore(String nip, String nama) {
+    public void insertBefore(String nipAcuan, String nipBaru, String namaBaru) {
+        if (cekNIP(nipBaru)) return;
         Node current = first;
         while (current != null) {
-            if (current.nip.equals(nip)) {
-                break;
+            if (current.nip.equals(nipAcuan)) {
+                Node newNode = new Node(nipBaru, namaBaru);
+                newNode.next = current;
+                newNode.previous = current.previous;
+                if (current.previous != null) {
+                    current.previous.next = newNode;
+                } else {
+                    first = newNode;
+                }
+                current.previous = newNode;
+                return;
             }
             current = current.next;
         }
-        if (current == null) {
-            System.out.println("NIP tidak ditemukan!");
-            return first;
-        }
-        Node newNode = new Node(nip, nama);
-        newNode.previous = current.previous;
-        newNode.next = current;
-        if (current.previous != null) {
-            current.previous.next = newNode;
-        } else {
-            first = newNode;
-        }
-        current.previous = newNode;
-        return first;
+        System.out.println("NIP acuan tidak ditemukan!");
     }
 
     public Node deleteFirst() {
@@ -149,27 +142,40 @@ class DoubleLink {
         return temp;
     }
 
-    public Node deleteByNIP(String nip) {
-        Node current = first;
-        while (current != null) {
-            if (current.nip.equals(nip)) {
-                break;
+    public Node deleteByNIP(Scanner sc, String nip) {
+        String confirm;
+        do {
+            System.out.print("Apakah Anda yakin ingin menghapus data dengan NIP " + nip + "? (y/n): ");
+            confirm = sc.nextLine().toLowerCase();
+            if (confirm.equalsIgnoreCase("y")) {
+                Node current = first;
+                while (current != null) {
+                    if (current.nip.equals(nip)) {
+                        break;
+                    }
+                    current = current.next;
+                }
+                if (current == null) {
+                    System.out.println("NIP tidak ditemukan!");
+                    return first;
+                }
+                if (current == first) {
+                    deleteFirst();
+                } else if (current == last) {
+                    deleteLast();
+                } else {
+                    current.previous.next = current.next;
+                    current.next.previous = current.previous;
+                }
+                return first;
+            }else if (confirm.equalsIgnoreCase("n")) {
+                System.out.println("Penghapusan dibatalkan.");
+                return first;
+            } else {
+                System.out.println("Pilihan tidak valid! Silakan masukkan 'y' atau 'n'.");
             }
-            current = current.next;
-        }
-        if (current == null) {
-            System.out.println("NIP tidak ditemukan!");
-            return first;
-        }
-        if (current == first) {
-            deleteFirst();
-        } else if (current == last) {
-            deleteLast();
-        } else {
-            current.previous.next = current.next;
-            current.next.previous = current.previous;
-        }
-        return first;
+            
+        }while (true);
     }
 
     public void tampilMaju() {
@@ -243,7 +249,7 @@ class DoubleLink {
     }
 }
 
-public class prak07_24051130002 {
+public class Prak07_24051130002 {
     public static String inputNIP(Scanner input) {
         String nip;
         while (true) {
@@ -273,87 +279,102 @@ public class prak07_24051130002 {
     }
 
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        DoubleLink dll = new DoubleLink();
-        int choice;
-        String nip, nama, searchNIP;
+        DoubleLink list = new DoubleLink();
+        Scanner sc = new Scanner(System.in);
+        int pilihan;
 
         do {
-            System.out.println("\n=== Menu Doubly Linked List ===");
-            System.out.println("1. Masukkan data di awal List");
-            System.out.println("2. Masukkan data di akhir List");
-            System.out.println("3. Masukkan data setelah NIP tertentu");
-            System.out.println("4. Masukkan data sebelum NIP tertentu");
-            System.out.println("5. Hapus data pertama");
-            System.out.println("6. Hapus data terakhir");
-            System.out.println("7. Tampilkan data dari awal");
-            System.out.println("8. Tampilkan data dari akhir");
-            System.out.println("9. Keluar");
-            System.out.print("Pilihan Anda (1-9): ");
-            while (!input.hasNextInt()) {
-                System.out.println("Input harus angka!");
-                System.out.print("Pilihan Anda (1-9): ");
-                input.next();
-            }
-            choice = input.nextInt();
-            input.nextLine(); // buang enter
+            System.out.println("\n=== MENU DOUBLY LINKED LIST ===");
+            System.out.println("1. Tambah data di awal");
+            System.out.println("2. Tambah data di akhir");
+            System.out.println("3. Tambah data setelah NIP tertentu");   // <- insertAfter
+            System.out.println("4. Tambah data sebelum NIP tertentu");   // <- insertBefore
+            System.out.println("5. Tampilkan maju");
+            System.out.println("6. Tampilkan mundur");
+            System.out.println("7. Cari nama");
+            System.out.println("8. Hapus data pertama");
+            System.out.println("9. Hapus data terakhir");
+            System.out.println("10. Hapus data berdasarkan NIP");
+            System.out.println("11. Export data ke file");
+            System.out.println("12. Import data dari file");
+            System.out.println("0. Keluar");
+            System.out.print("Pilih menu: ");
+            pilihan = sc.nextInt();
+            sc.nextLine(); // Buang newline
 
-            switch (choice) {
+            switch (pilihan) {
                 case 1:
-                    nip = inputNIP(input);
-                    nama = inputNama(input);
-                    dll.insertFirst(nip, nama);
+                    System.out.print("Masukkan NIP: ");
+                    String nipAwal = sc.nextLine();
+                    System.out.print("Masukkan Nama: ");
+                    String namaAwal = sc.nextLine();
+                    list.insertFirst(nipAwal, namaAwal);
                     break;
                 case 2:
-                    nip = inputNIP(input);
-                    nama = inputNama(input);
-                    dll.insertLast(nip, nama);
+                    System.out.print("Masukkan NIP: ");
+                    String nipAkhir = sc.nextLine();
+                    System.out.print("Masukkan Nama: ");
+                    String namaAkhir = sc.nextLine();
+                    list.insertLast(nipAkhir, namaAkhir);
                     break;
-                case 3:
-                    System.out.print("Masukkan NIP yang dicari (insert setelah): ");
-                    searchNIP = input.nextLine();
-                    nip = inputNIP(input);
-                    nama = inputNama(input);
-                    dll.insertAfter(searchNIP, nama);
+                    case 3: // insertAfter
+                    System.out.print("Masukkan NIP yang ingin disisipkan setelahnya: ");
+                    String nipSetelah = sc.nextLine();
+                    System.out.print("Masukkan NIP baru: ");
+                    String nipBaruSetelah = sc.nextLine();
+                    System.out.print("Masukkan Nama baru: ");
+                    String namaBaruSetelah = sc.nextLine();
+                    list.insertAfter(nipSetelah, namaBaruSetelah);
                     break;
-                case 4:
-                    System.out.print("Masukkan NIP yang dicari (insert sebelum): ");
-                    searchNIP = input.nextLine();
-                    nip = inputNIP(input);
-                    nama = inputNama(input);
-                    dll.insertBefore(searchNIP, nama);
+                case 4: // insertBefore
+                    System.out.print("Masukkan NIP yang ingin disisipkan sebelumnya: ");
+                    String nipSebelum = sc.nextLine();
+                    System.out.print("Masukkan NIP baru: ");
+                    String nipBaruSebelum = sc.nextLine();
+                    System.out.print("Masukkan Nama baru: ");
+                    String namaBaruSebelum = sc.nextLine();
+                    list.insertBefore(nipSebelum, namaBaruSebelum);
                     break;
                 case 5:
-                    dll.deleteFirst();
+                    list.tampilMaju();
                     break;
                 case 6:
-                    dll.deleteLast();
+                    list.tampilMundur();
                     break;
                 case 7:
-                    System.out.println("Data dari awal:");
-                    Node current = dll.getFirst();
-                    while (current != null) {
-                        current.tampil();
-                        current = current.next;
-                    }
+                    System.out.print("Masukkan nama yang dicari: ");
+                    String cariNama = sc.nextLine();
+                    list.cariNama(cariNama);
                     break;
                 case 8:
-                    System.out.println("Data dari akhir:");
-                    Node cur = dll.getLast();
-                    while (cur != null) {
-                        cur.tampil();
-                        cur = cur.previous;
-                    }
+                    list.deleteFirst();
                     break;
                 case 9:
-                    System.out.println("Terima kasih telah menggunakan program ini.");
+                    list.deleteLast();
+                    break;
+                case 10:
+                    System.out.print("Masukkan NIP yang ingin dihapus: ");
+                    String nipHapus = sc.nextLine();
+                    list.deleteByNIP(sc, nipHapus);
+                    break;
+                case 11:
+                    System.out.print("Masukkan nama file untuk export (cth: data.txt): ");
+                    String namaFileExport = sc.nextLine();
+                    list.exportFile(namaFileExport);
+                    break;
+                case 12:
+                    System.out.print("Masukkan nama file untuk import (cth: data.txt): ");
+                    String namaFileImport = sc.nextLine();
+                    list.importFile(namaFileImport);
+                    break;
+                case 0:
+                    System.out.println("Terima kasih. Program selesai.");
                     break;
                 default:
-                    System.out.println("Pilihan tidak valid!");
-            }
+                    System.out.println("Pilihan tidak valid. Coba lagi.");
+            }            
+        } while (pilihan != 0);
 
-        } while (choice != 9);
-
-        input.close();
+        sc.close();
     }
 }
