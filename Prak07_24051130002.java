@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import java.io.PrintStream;
+import java.io.*;
 
 class Node {
     public String nip;
@@ -148,9 +148,102 @@ class DoubleLink {
         last = last.previous;
         return temp;
     }
+
+    public Node deleteByNIP(String nip) {
+        Node current = first;
+        while (current != null) {
+            if (current.nip.equals(nip)) {
+                break;
+            }
+            current = current.next;
+        }
+        if (current == null) {
+            System.out.println("NIP tidak ditemukan!");
+            return first;
+        }
+        if (current == first) {
+            deleteFirst();
+        } else if (current == last) {
+            deleteLast();
+        } else {
+            current.previous.next = current.next;
+            current.next.previous = current.previous;
+        }
+        return first;
+    }
+
+    public void tampilMaju() {
+        Node current = first;
+        if (isEmpty()) {
+            System.out.println("List kosong!");
+            return;
+        }
+        while (current != null) {
+            current.tampil();
+            current = current.next;
+        }
+    }
+
+    public void tampilMundur() {
+        Node current = last;
+        if (isEmpty()) {
+            System.out.println("List kosong!");
+            return;
+        }
+        while (current != null) {
+            current.tampil();
+            current = current.previous;
+        }
+    }
+
+    public void cariNama(String nama) {
+        Node current = first;
+        boolean found = false;
+        while (current != null) {
+            if (current.nama.equalsIgnoreCase(nama)) {
+                System.out.println("NIP: " + current.nip + ", Nama: " + current.nama);
+                found = true;
+            }
+            current = current.next;
+        }
+        if (!found) {
+            System.out.println("Nama tidak ditemukan!");
+        }
+    }
+
+    public void exportFile(String namafile) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(namafile))) {
+            Node current = first;
+            while (current != null) {
+                writer.write(current.nip + "," + current.nama);
+                writer.newLine();
+                current = current.next;
+            }
+            System.out.println("Data berhasil diekspor ke " + namafile);
+        } catch (IOException e) {
+            System.out.println("Error saat menulis ke file: " + e.getMessage());
+        }
+    }
+    
+    public void importFile(String namafile) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(namafile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String nip = parts[0].trim();
+                    String nama = parts[1].trim();
+                    insertLast(nip, nama);
+                }
+            }
+            System.out.println("Data berhasil diimpor dari " + namafile);
+        } catch (IOException e) {
+            System.out.println("Error saat membaca file: " + e.getMessage());
+        }
+    }
 }
 
-public class prak07_24051130002 {
+public class Prak07_24051130002 {
 
     // Validasi agar input NIM hanya angka
     public static String inputNIM(Scanner input) {
@@ -183,7 +276,7 @@ public class prak07_24051130002 {
     }
 
     public static void main(String[] args) {
-        DoublyLinkedList dll = new DoublyLinkedList();
+        DoubleLink dll = new DoubleLink();
         Scanner input = new Scanner(System.in);
         int choice;
         String nim, nama, searchNIM;
