@@ -243,9 +243,7 @@ class DoubleLink {
     }
 }
 
-public class Prak07_24051130002 {
-
-    // Validasi agar input NIP hanya angka
+public class prak07_24051130002 {
     public static String inputNIP(Scanner input) {
         String nip;
         while (true) {
@@ -260,7 +258,6 @@ public class Prak07_24051130002 {
         return nip;
     }
 
-    // Validasi agar input Nama hanya huruf
     public static String inputNama(Scanner input) {
         String nama;
         while (true) {
@@ -276,91 +273,86 @@ public class Prak07_24051130002 {
     }
 
     public static void main(String[] args) {
-        DoubleLink dll = new DoubleLink();
         Scanner input = new Scanner(System.in);
+        DoubleLink dll = new DoubleLink();
         int choice;
         String nip, nama, searchNIP;
 
         do {
             System.out.println("\n=== Menu Doubly Linked List ===");
-            System.out.println("1. Memasukkan data di awal List");
-            System.out.println("2. Memasukkan data di akhir List");
-            System.out.println("3. Memasukkan data setelah data tertentu");
-            System.out.println("4. Menghapus data di awal List");
-            System.out.println("5. Menghapus data di akhir List");
-            System.out.println("6. Menghapus suatu data tertentu dari List");
-            System.out.println("7. Menampilkan data dari awal List");
-            System.out.println("8. Menampilkan data dari akhir List");
-            System.out.println("9. Mencari data berdasarkan Nama");
-            System.out.println("10. Ekspor data ke file");
-            System.out.println("11. Impor data dari file");
-            System.out.println("12. Keluar");
-            System.out.print("Pilih menu (1-12): ");
+            System.out.println("1. Masukkan data di awal List");
+            System.out.println("2. Masukkan data di akhir List");
+            System.out.println("3. Masukkan data setelah NIP tertentu");
+            System.out.println("4. Masukkan data sebelum NIP tertentu");
+            System.out.println("5. Hapus data pertama");
+            System.out.println("6. Hapus data terakhir");
+            System.out.println("7. Tampilkan data dari awal");
+            System.out.println("8. Tampilkan data dari akhir");
+            System.out.println("9. Keluar");
+            System.out.print("Pilihan Anda (1-9): ");
             while (!input.hasNextInt()) {
                 System.out.println("Input harus angka!");
-                System.out.print("Pilih menu (1-12): ");
+                System.out.print("Pilihan Anda (1-9): ");
                 input.next();
             }
             choice = input.nextInt();
-            input.nextLine(); // Buang newline
+            input.nextLine(); // buang enter
 
             switch (choice) {
                 case 1:
                     nip = inputNIP(input);
                     nama = inputNama(input);
-                    dll.insertAtBeginning(nip, nama);
+                    dll.insertFirst(nip, nama);
                     break;
                 case 2:
                     nip = inputNIP(input);
                     nama = inputNama(input);
-                    dll.insertAtEnd(nip, nama);
+                    dll.insertLast(nip, nama);
                     break;
                 case 3:
-                    System.out.print("Masukkan NIP setelah data mana? ");
+                    System.out.print("Masukkan NIP yang dicari (insert setelah): ");
                     searchNIP = input.nextLine();
                     nip = inputNIP(input);
                     nama = inputNama(input);
-                    dll.insertAfter(searchNIP, nip, nama);
+                    dll.insertAfter(searchNIP, nama);
                     break;
                 case 4:
-                    dll.deleteAtBeginning();
+                    System.out.print("Masukkan NIP yang dicari (insert sebelum): ");
+                    searchNIP = input.nextLine();
+                    nip = inputNIP(input);
+                    nama = inputNama(input);
+                    dll.insertBefore(searchNIP, nama);
                     break;
                 case 5:
-                    dll.deleteAtEnd();
+                    dll.deleteFirst();
                     break;
                 case 6:
-                    System.out.print("Masukkan NIP yang ingin dihapus: ");
-                    nip = input.nextLine();
-                    dll.deleteByNIP(nip);
+                    dll.deleteLast();
                     break;
                 case 7:
-                    dll.displayFromHead();
+                    System.out.println("Data dari awal:");
+                    Node current = dll.getFirst();
+                    while (current != null) {
+                        current.tampil();
+                        current = current.next;
+                    }
                     break;
                 case 8:
-                    dll.displayFromTail();
+                    System.out.println("Data dari akhir:");
+                    Node cur = dll.getLast();
+                    while (cur != null) {
+                        cur.tampil();
+                        cur = cur.previous;
+                    }
                     break;
                 case 9:
-                    System.out.print("Masukkan Nama yang ingin dicari: ");
-                    nama = input.nextLine();
-                    dll.searchByName(nama);
-                    break;
-                case 10:
-                    System.out.print("Masukkan nama file untuk ekspor (contoh: data.txt): ");
-                    String exportFile = input.nextLine();
-                    dll.exportToFile(exportFile);
-                    break;
-                case 11:
-                    System.out.print("Masukkan nama file untuk impor (contoh: data.txt): ");
-                    String importFile = input.nextLine();
-                    dll.importFromFile(importFile);
-                    break;
-                case 12:
-                    System.out.println("Terima kasih telah menggunakan program ini!");
+                    System.out.println("Terima kasih telah menggunakan program ini.");
                     break;
                 default:
-                    System.out.println("Pilihan tidak valid.");
+                    System.out.println("Pilihan tidak valid!");
             }
-        } while (choice != 12);
+
+        } while (choice != 9);
 
         input.close();
     }
