@@ -150,7 +150,7 @@ class DoubleLink {
     }
 }
 
-public class prak07_24051130002 {
+public class Prak07_24051130002 {
 
     // Validasi agar input NIP hanya angka
     public static String inputNIP(Scanner input) {
