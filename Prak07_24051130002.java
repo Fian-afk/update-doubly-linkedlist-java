@@ -245,19 +245,19 @@ class DoubleLink {
 
 public class Prak07_24051130002 {
 
-    // Validasi agar input NIM hanya angka
-    public static String inputNIM(Scanner input) {
-        String nim;
+    // Validasi agar input NIP hanya angka
+    public static String inputNIP(Scanner input) {
+        String nip;
         while (true) {
-            System.out.print("Masukkan NIM (angka saja): ");
-            nim = input.nextLine();
-            if (nim.matches("\\d+")) {
+            System.out.print("Masukkan NIP (angka saja): ");
+            nip = input.nextLine();
+            if (nip.matches("\\d+")) {
                 break;
             } else {
-                System.out.println("NIM harus berupa angka!");
+                System.out.println("NIP harus berupa angka!");
             }
         }
-        return nim;
+        return nip;
     }
 
     // Validasi agar input Nama hanya huruf
@@ -279,7 +279,7 @@ public class Prak07_24051130002 {
         DoubleLink dll = new DoubleLink();
         Scanner input = new Scanner(System.in);
         int choice;
-        String nim, nama, searchNIM;
+        String nip, nama, searchNIP;
 
         do {
             System.out.println("\n=== Menu Doubly Linked List ===");
@@ -306,21 +306,21 @@ public class Prak07_24051130002 {
 
             switch (choice) {
                 case 1:
-                    nim = inputNIM(input);
+                    nip = inputNIP(input);
                     nama = inputNama(input);
-                    dll.insertAtBeginning(nim, nama);
+                    dll.insertAtBeginning(nip, nama);
                     break;
                 case 2:
-                    nim = inputNIM(input);
+                    nip = inputNIP(input);
                     nama = inputNama(input);
-                    dll.insertAtEnd(nim, nama);
+                    dll.insertAtEnd(nip, nama);
                     break;
                 case 3:
-                    System.out.print("Masukkan NIM setelah data mana? ");
-                    searchNIM = input.nextLine();
-                    nim = inputNIM(input);
+                    System.out.print("Masukkan NIP setelah data mana? ");
+                    searchNIP = input.nextLine();
+                    nip = inputNIP(input);
                     nama = inputNama(input);
-                    dll.insertAfter(searchNIM, nim, nama);
+                    dll.insertAfter(searchNIP, nip, nama);
                     break;
                 case 4:
                     dll.deleteAtBeginning();
@@ -329,9 +329,9 @@ public class Prak07_24051130002 {
                     dll.deleteAtEnd();
                     break;
                 case 6:
-                    System.out.print("Masukkan NIM yang ingin dihapus: ");
-                    nim = input.nextLine();
-                    dll.deleteByNIM(nim);
+                    System.out.print("Masukkan NIP yang ingin dihapus: ");
+                    nip = input.nextLine();
+                    dll.deleteByNIP(nip);
                     break;
                 case 7:
                     dll.displayFromHead();
