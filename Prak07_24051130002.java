@@ -72,7 +72,7 @@ class DoubleLink {
         last = newNode;
     }
 
-    public static Node insertAfter(Node first, String nip, String nama) {
+    public Node insertAfter(String nip, String nama) {
         Node current = first;
         while (current != null) {
             if (current.nip.equals(nip)) {
@@ -95,7 +95,7 @@ class DoubleLink {
         return first;
     }
 
-    public static Node insertBefore(Node first, String nip, String nama) {
+    public Node insertBefore(String nip, String nama) {
         Node current = first;
         while (current != null) {
             if (current.nip.equals(nip)) {
@@ -119,7 +119,35 @@ class DoubleLink {
         return first;
     }
 
-    
+    public Node deleteFirst() {
+        if (isEmpty()) {
+            System.out.println("List kosong!");
+            return null;
+        }
+        Node temp = first;
+        if (first.next == null) {
+            last = null;
+        } else {
+            first.next.previous = null;
+        }
+        first = first.next;
+        return temp;
+    }
+
+    public Node deleteLast() {
+        if (isEmpty()) {
+            System.out.println("List kosong!");
+            return null;
+        }
+        Node temp = last;
+        if (first.next == null) {
+            first = null;
+        } else {
+            last.previous.next = null;
+        }
+        last = last.previous;
+        return temp;
+    }
 }
 
 public class Prak07_24051130002 {
