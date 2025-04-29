@@ -2,6 +2,22 @@
 //24051130010
 //24051130002
 
+//Menu
+// 1. Tambah data di awal
+// 2. Tambah data di akhir
+// 3. Tambah data setelah NIP tertentu
+// 4. Tambah data sebelum NIP tertentu
+// 5. Tampilkan maju
+// 6. Tampilkan mundur
+// 7. Cari nama
+// 8. Hapus data pertama
+// 9. Hapus data terakhir
+// 10. Hapus data berdasarkan NIP
+// 11. Export data ke file
+// 12. Import data dari file
+// 0. Keluar
+
+
 import java.util.Scanner;
 import java.io.*;
 
