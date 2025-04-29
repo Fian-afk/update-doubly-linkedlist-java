@@ -205,7 +205,7 @@ class DoubleLink {
         Node current = first;
         boolean found = false;
         while (current != null) {
-            if (current.nama.equalsIgnoreCase(nama)) {
+            if (current.nama.contains(nama.toLowerCase())) {
                 
                 System.out.println("NIP: " + current.nip + ", Nama: " + current.nama);
                 found = true;
