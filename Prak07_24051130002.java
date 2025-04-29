@@ -1,3 +1,7 @@
+//KELOMPOK HARIMAU
+//24051130010
+//2405113002
+
 import java.util.Scanner;
 import java.io.*;
 
@@ -48,12 +52,12 @@ class DoubleLink {
         }
         Node newNode = new Node(nip, nama);
         if (isEmpty()) {
-            last = newNode;
+            last = newNode;                 // last diarahkan ke newNode jika list kosong
         } else {
-            first.previous = newNode;
+            first.previous = newNode;     // node pertama diarahkan dari newNode
         }
-        newNode.next = first;
-        first = newNode;
+        newNode.next = first;           // newNode mengarah ke node pertama sebelumnya
+        first = newNode;               // first diarahkan ke newNode
         System.out.print("Data berhasil ditambahkan di awal.");
     }
 
@@ -63,12 +67,12 @@ class DoubleLink {
         }
         Node newNode = new Node(nip, nama);
         if (isEmpty()) {
-            first = newNode;
+            first = newNode;    // first diarahkan ke newNode jika list koson
         } else {
-            last.next = newNode;
-            newNode.previous = last;
+            last.next = newNode;     // node terakhir sebelumnya mengarah ke newNode
+            newNode.previous = last;   // newNode diarahkan dari node terakhir sebelumnya 
         }
-        last = newNode;
+        last = newNode; //last diarahkan ke newNode
         System.out.println("Data berhasil ditambahkan di akhir.");
     }
 
@@ -78,14 +82,14 @@ class DoubleLink {
         while (current != null) {
             if (current.nip.equals(nipAcuan)) {
                 Node newNode = new Node(nipBaru, namaBaru);
-                newNode.next = current.next;
-                newNode.previous = current;
+                newNode.next = current.next;    // newNode mengarah ke node setelah current
+                newNode.previous = current;     // newNode diarahkan dari current
                 if (current.next != null) {
-                    current.next.previous = newNode;
+                    current.next.previous = newNode;    // node setelah current diarahkan dari newNode
                 } else {
-                    last = newNode;
+                    last = newNode;     // last diarahkan ke newNode jika current adalah node terakhir
                 }
-                current.next = newNode;
+                current.next = newNode;     // current mengarah ke newNode
                 System.out.println("Data berhasil ditambahkan setelah NIP "+ nipAcuan);
                 return;
             }
@@ -100,22 +104,22 @@ class DoubleLink {
         while (current != null) {
             if (current.nip.equals(nipAcuan)) {
                 Node newNode = new Node(nipBaru, namaBaru);
-                newNode.next = current;
-                newNode.previous = current.previous;
+                newNode.next = current;                        // newNode mengarah ke current
+                newNode.previous = current.previous;           // newNode diarahkan dari node sebelum current
                 if (current.previous != null) {
-                    current.previous.next = newNode;
+                    current.previous.next = newNode;           // node sebelum current mengarah ke newNode
                 } else {
-                    first = newNode;
+                    first = newNode;                           // first diarahkan ke newNode jika current adalah node pertama
                 }
-                current.previous = newNode;
-                System.out.println("Data berhasil ditambahkan setelah NIP "+ nipAcuan);
+                current.previous = newNode;                    // current diarahkan dari newNode
+                System.out.println("Data berhasil ditambahkan sebelum NIP " + nipAcuan);
                 return;
             }
             current = current.next;
         }
         System.out.println("NIP acuan tidak ditemukan!");
     }
-
+    
     public Node deleteFirst() {
         if (isEmpty()) {
             System.out.println("List kosong!");
@@ -123,14 +127,14 @@ class DoubleLink {
         }
         Node temp = first;
         if (first.next == null) {
-            last = null;
+            last = null;                                       // last dihapus jika hanya ada satu node
         } else {
-            first.next.previous = null;
+            first.next.previous = null;                        // node kedua tidak lagi diarahkan dari node pertama
         }
-        first = first.next;
+        first = first.next;                                    // first diarahkan ke node kedua
         System.out.println("Data berhasil dihapus di awal.");
         return temp;
-    }
+    }    
 
     public Node deleteLast() {
         if (isEmpty()) {
@@ -139,14 +143,15 @@ class DoubleLink {
         }
         Node temp = last;
         if (first.next == null) {
-            first = null;
+            first = null;                                      // first dihapus jika hanya ada satu node
         } else {
-            last.previous.next = null;
+            last.previous.next = null;                         // node sebelum last tidak lagi mengarah ke last
         }
-        last = last.previous;
+        last = last.previous;                                  // last diarahkan ke node sebelumnya
         System.out.println("Data berhasil dihapus di akhir.");
         return temp;
     }
+    
 
     public Node deleteByNIP(Scanner sc, String nip) {
         if (isEmpty()) {
@@ -205,7 +210,7 @@ class DoubleLink {
         Node current = first;
         boolean found = false;
         while (current != null) {
-            if (current.nama.contains(nama.toLowerCase())) {
+            if (current.nama.equalsIgnoreCase(nama)) {
                 
                 System.out.println("NIP: " + current.nip + ", Nama: " + current.nama);
                 found = true;
