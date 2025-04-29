@@ -1,6 +1,6 @@
 //KELOMPOK HARIMAU
 //24051130010
-//2405113002
+//24051130002
 
 import java.util.Scanner;
 import java.io.*;
