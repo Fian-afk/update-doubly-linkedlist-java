@@ -54,6 +54,7 @@ class DoubleLink {
         }
         newNode.next = first;
         first = newNode;
+        System.out.print("Data berhasil ditambahkan di awal.");
     }
 
     public void insertLast(String nip, String nama) {
@@ -68,6 +69,7 @@ class DoubleLink {
             newNode.previous = last;
         }
         last = newNode;
+        System.out.println("Data berhasil ditambahkan di akhir.");
     }
 
     public void insertAfter(String nipAcuan, String nipBaru, String namaBaru) {
@@ -84,6 +86,7 @@ class DoubleLink {
                     last = newNode;
                 }
                 current.next = newNode;
+                System.out.println("Data berhasil ditambahkan setelah NIP "+ nipAcuan);
                 return;
             }
             current = current.next;
@@ -105,6 +108,7 @@ class DoubleLink {
                     first = newNode;
                 }
                 current.previous = newNode;
+                System.out.println("Data berhasil ditambahkan setelah NIP "+ nipAcuan);
                 return;
             }
             current = current.next;
@@ -124,6 +128,7 @@ class DoubleLink {
             first.next.previous = null;
         }
         first = first.next;
+        System.out.println("Data berhasil dihapus di awal.");
         return temp;
     }
 
@@ -139,39 +144,37 @@ class DoubleLink {
             last.previous.next = null;
         }
         last = last.previous;
+        System.out.println("Data berhasil dihapus di akhir.");
         return temp;
     }
 
-    public void deleteByNIP(Scanner sc, String nip) {
-        Node current = first;
-        while (current != null) {
-            if (current.nip.equals(nip)) {
-                break;
-            }
-            current = current.next;
+    public Node deleteByNIP(Scanner sc, String nip) {
+        if (isEmpty()) {
+            System.out.println("Belum ada data.");
+            return null;
         }
         
-        if (current == null) {
-            System.out.println("NIP tidak ditemukan!");
-            return;
-        }
-
-        System.out.print("Apakah Anda yakin ingin menghapus data dengan NIP " + nip + "? (y/n): ");
-        String confirm = sc.nextLine().toLowerCase();
-        
-        if (confirm.equals("y")) {
-            if (current == first) {
-                deleteFirst();
-            } else if (current == last) {
-                deleteLast();
+        String confirm;
+        do {
+            System.out.print("Yakin ingin menghapus data terakhir? (y/n): ");
+            confirm = sc.next();
+            if (confirm.equalsIgnoreCase("y")) {
+                Node temp = last;
+                if (last.previous == null) {
+                    first = null;
+                } else {
+                    last.previous.next = null;
+                }
+                last = last.previous;
+                System.out.println("Data berhasil dihapus.");
+                return temp;
+            } else if (confirm.equalsIgnoreCase("n")) {
+                System.out.println("Penghapusan dibatalkan.");
+                return null;
             } else {
-                current.previous.next = current.next;
-                current.next.previous = current.previous;
+                System.out.println("Input tidak valid. Masukkan 'y' untuk ya atau 'n' untuk tidak.");
             }
-            System.out.println("Data berhasil dihapus.");
-        } else {
-            System.out.println("Penghapusan dibatalkan.");
-        }
+        } while (true);
     }
 
     public void tampilMaju() {
@@ -203,10 +206,13 @@ class DoubleLink {
         boolean found = false;
         while (current != null) {
             if (current.nama.equalsIgnoreCase(nama)) {
+                
                 System.out.println("NIP: " + current.nip + ", Nama: " + current.nama);
                 found = true;
+                
             }
             current = current.next;
+            
         }
         if (!found) {
             System.out.println("Nama tidak ditemukan!");
@@ -249,7 +255,7 @@ public class Prak07_24051130002 {
     public static String inputNIP(Scanner input) {
         String nip;
         while (true) {
-            System.out.print("Masukkan NIP (angka saja): ");
+            System.out.print("Masukkan NIP Dosen: ");
             nip = input.nextLine();
             if (nip.matches("\\d+")) {
                 break;
@@ -263,7 +269,7 @@ public class Prak07_24051130002 {
     public static String inputNama(Scanner input) {
         String nama;
         while (true) {
-            System.out.print("Masukkan Nama (huruf saja): ");
+            System.out.print("Masukkan Nama Dosen: ");
             nama = input.nextLine();
             if (nama.matches("[a-zA-Z\\s]+")) {
                 break;
@@ -280,7 +286,7 @@ public class Prak07_24051130002 {
         int pilihan;
 
         do {
-            System.out.println("\n=== MENU DOUBLY LINKED LIST ===");
+            System.out.println("\n=== DATA DOSEN ===");
             System.out.println("1. Tambah data di awal");
             System.out.println("2. Tambah data di akhir");
             System.out.println("3. Tambah data setelah NIP tertentu");
