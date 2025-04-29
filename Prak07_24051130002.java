@@ -77,7 +77,7 @@ class DoubleLink {
         System.out.print("Data berhasil ditambahkan di awal.");
     }
 
-    public void insertLast(String nip, String nama) {
+    public void insertLast(String nip, String nama, boolean tampilPesan) {
         if (cekNIP(nip)) {
             return;
         }
@@ -89,7 +89,9 @@ class DoubleLink {
             newNode.previous = last;   // newNode diarahkan dari node terakhir sebelumnya 
         }
         last = newNode; //last diarahkan ke newNode
-        System.out.println("Data berhasil ditambahkan di akhir.");
+        if (tampilPesan) {
+            System.out.println("Data berhasil ditambahkan di akhir.");
+        }
     }
 
     public void insertAfter(String nipAcuan, String nipBaru, String namaBaru) {
@@ -262,7 +264,7 @@ class DoubleLink {
                 if (parts.length == 2) {
                     String nip = parts[0].trim();
                     String nama = parts[1].trim();
-                    insertLast(nip, nama);
+                    insertLast(nip, nama, false);
                 }
             }
             System.out.println("Data berhasil diimpor dari " + namafile);
@@ -334,7 +336,7 @@ public class Prak07_24051130002 {
                 case 2:
                     String nipAkhir = inputNIP(sc);
                     String namaAkhir = inputNama(sc);
-                    list.insertLast(nipAkhir, namaAkhir);
+                    list.insertLast(nipAkhir, namaAkhir, true);
                     break;
                 case 3:
                     System.out.print("Masukkan NIP acuan: ");
