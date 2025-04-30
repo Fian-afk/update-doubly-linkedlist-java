@@ -5,14 +5,14 @@
 //Menu
 // 1. Tambah data di awal
 // 2. Tambah data di akhir
-// 3. Tambah data setelah NIP tertentu
-// 4. Tambah data sebelum NIP tertentu
+// 3. Tambah data setelah id tertentu
+// 4. Tambah data sebelum id tertentu
 // 5. Tampilkan maju
 // 6. Tampilkan mundur
-// 7. Cari nama
+// 7. Cari judul
 // 8. Hapus data pertama
 // 9. Hapus data terakhir
-// 10. Hapus data berdasarkan NIP
+// 10. Hapus data berdasarkan id
 // 11. Export data ke file
 // 12. Import data dari file
 // 0. Keluar
@@ -22,18 +22,18 @@ import java.util.Scanner;
 import java.io.*;
 
 class Node {
-    public String nip;
-    public String nama;
+    public String id;
+    public String judul;
     public Node next;
     public Node previous;
 
-    public Node(String nip, String nama) {
-        this.nip = nip;
-        this.nama = nama;
+    public Node(String id, String judul) {
+        this.id = id;
+        this.judul = judul;
     }
 
     public void tampil() {
-        System.out.println("NIP: " + nip + ", Nama: " + nama);
+        System.out.println("id: " + id + ", judul: " + judul);
     }
 }
 
@@ -50,11 +50,11 @@ class DoubleLink {
         return (first == null);
     }
 
-    public boolean cekNIP(String nip) {
+    public boolean cekid(String id) {
         Node current = first;
         while (current != null) {
-            if (current.nip.equals(nip)) {
-                System.out.println("NIP sudah ada!");
+            if (current.id.equals(id)) {
+                System.out.println("id sudah ada!");
                 return true;
             }
             current = current.next;
@@ -62,11 +62,11 @@ class DoubleLink {
         return false;
     }
 
-    public void insertFirst(String nip, String nama) {
-        if (cekNIP(nip)) {
+    public void insertFirst(String id, String judul) {
+        if (cekid(id)) {
             return;
         }
-        Node newNode = new Node(nip, nama);
+        Node newNode = new Node(id, judul);
         if (isEmpty()) {
             last = newNode;                 // last diarahkan ke newNode jika list kosong
         } else {
@@ -77,11 +77,11 @@ class DoubleLink {
         System.out.print("Data berhasil ditambahkan di awal.");
     }
 
-    public void insertLast(String nip, String nama, boolean tampilPesan) {
-        if (cekNIP(nip)) {
+    public void insertLast(String id, String judul, boolean tampilPesan) {
+        if (cekid(id)) {
             return;
         }
-        Node newNode = new Node(nip, nama);
+        Node newNode = new Node(id, judul);
         if (isEmpty()) {
             first = newNode;    // first diarahkan ke newNode jika list koson
         } else {
@@ -94,12 +94,12 @@ class DoubleLink {
         }
     }
 
-    public void insertAfter(String nipAcuan, String nipBaru, String namaBaru) {
-        if (cekNIP(nipBaru)) return;
+    public void insertAfter(String idAcuan, String idBaru, String judulBaru) {
+        if (cekid(idBaru)) return;
         Node current = first;
         while (current != null) {
-            if (current.nip.equals(nipAcuan)) {
-                Node newNode = new Node(nipBaru, namaBaru);
+            if (current.id.equals(idAcuan)) {
+                Node newNode = new Node(idBaru, judulBaru);
                 newNode.next = current.next;    // newNode mengarah ke node setelah current
                 newNode.previous = current;     // newNode diarahkan dari current
                 if (current.next != null) {
@@ -108,20 +108,20 @@ class DoubleLink {
                     last = newNode;     // last diarahkan ke newNode jika current adalah node terakhir
                 }
                 current.next = newNode;     // current mengarah ke newNode
-                System.out.println("Data berhasil ditambahkan setelah NIP "+ nipAcuan);
+                System.out.println("Data berhasil ditambahkan setelah id "+ idAcuan);
                 return;
             }
             current = current.next;
         }
-        System.out.println("NIP acuan tidak ditemukan!");
+        System.out.println("id acuan tidak ditemukan!");
     }
 
-    public void insertBefore(String nipAcuan, String nipBaru, String namaBaru) {
-        if (cekNIP(nipBaru)) return;
+    public void insertBefore(String idAcuan, String idBaru, String judulBaru) {
+        if (cekid(idBaru)) return;
         Node current = first;
         while (current != null) {
-            if (current.nip.equals(nipAcuan)) {
-                Node newNode = new Node(nipBaru, namaBaru);
+            if (current.id.equals(idAcuan)) {
+                Node newNode = new Node(idBaru, judulBaru);
                 newNode.next = current;                        // newNode mengarah ke current
                 newNode.previous = current.previous;           // newNode diarahkan dari node sebelum current
                 if (current.previous != null) {
@@ -130,12 +130,12 @@ class DoubleLink {
                     first = newNode;                           // first diarahkan ke newNode jika current adalah node pertama
                 }
                 current.previous = newNode;                    // current diarahkan dari newNode
-                System.out.println("Data berhasil ditambahkan sebelum NIP " + nipAcuan);
+                System.out.println("Data berhasil ditambahkan sebelum id " + idAcuan);
                 return;
             }
             current = current.next;
         }
-        System.out.println("NIP acuan tidak ditemukan!");
+        System.out.println("id acuan tidak ditemukan!");
     }
     
     public Node deleteFirst() {
@@ -171,7 +171,7 @@ class DoubleLink {
     }
     
 
-    public Node deleteByNIP(Scanner sc, String nip) {
+    public Node deleteByid(Scanner sc, String id) {
         if (isEmpty()) {
             System.out.println("Belum ada data.");
             return null;
@@ -224,13 +224,13 @@ class DoubleLink {
         }
     }
 
-    public void cariNama(String nama) {
+    public void carijudul(String judul) {
         Node current = first;
         boolean found = false;
         while (current != null) {
-            if (current.nama.equalsIgnoreCase(nama)) {
+            if (current.judul.equalsIgnoreCase(judul)) {
                 
-                System.out.println("NIP: " + current.nip + ", Nama: " + current.nama);
+                System.out.println("ID Buku: " + current.id + ", Judul Buku: " + current.judul);
                 found = true;
                 
             }
@@ -238,36 +238,36 @@ class DoubleLink {
             
         }
         if (!found) {
-            System.out.println("Nama tidak ditemukan!");
+            System.out.println("judul tidak ditemukan!");
         }
     }
 
-    public void exportFile(String namafile) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(namafile))) {
+    public void exportFile(String judulfile) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(judulfile))) {
             Node current = first;
             while (current != null) {
-                writer.write(current.nip + "," + current.nama);
+                writer.write(current.id + "," + current.judul);
                 writer.newLine();
                 current = current.next;
             }
-            System.out.println("Data berhasil diekspor ke " + namafile);
+            System.out.println("Data berhasil diekspor ke " + judulfile);
         } catch (IOException e) {
             System.out.println("Error saat menulis ke file: " + e.getMessage());
         }
     }
     
-    public void importFile(String namafile) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(namafile))) {
+    public void importFile(String judulfile) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(judulfile))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 2) {
-                    String nip = parts[0].trim();
-                    String nama = parts[1].trim();
-                    insertLast(nip, nama, false);
+                    String id = parts[0].trim();
+                    String judul = parts[1].trim();
+                    insertLast(id, judul, false);
                 }
             }
-            System.out.println("Data berhasil diimpor dari " + namafile);
+            System.out.println("Data berhasil diimpor dari " + judulfile);
         } catch (IOException e) {
             System.out.println("Error saat membaca file: " + e.getMessage());
         }
@@ -275,32 +275,32 @@ class DoubleLink {
 }
 
 public class Prak07_24051130002 {
-    public static String inputNIP(Scanner input) {
-        String nip;
+    public static String inputid(Scanner input) {
+        String id;
         while (true) {
-            System.out.print("Masukkan NIP Dosen: ");
-            nip = input.nextLine();
-            if (nip.matches("\\d+")) {
+            System.out.print("Masukkan ID Buku: ");
+            id = input.nextLine();
+            if (id.matches("\\d+")) {
                 break;
             } else {
-                System.out.println("NIP harus berupa angka!");
+                System.out.println("id harus berupa angka!");
             }
         }
-        return nip;
+        return id;
     }
 
-    public static String inputNama(Scanner input) {
-        String nama;
+    public static String inputjudul(Scanner input) {
+        String judul;
         while (true) {
-            System.out.print("Masukkan Nama Dosen: ");
-            nama = input.nextLine();
-            if (nama.matches("[a-zA-Z\\s]+")) {
+            System.out.print("Masukkan judul Buku: ");
+            judul = input.nextLine();
+            if (judul.matches("[a-zA-Z\\s]+")) {
                 break;
             } else {
-                System.out.println("Nama harus berupa huruf!");
+                System.out.println("judul harus berupa huruf!");
             }
         }
-        return nama;
+        return judul;
     }
 
     public static void main(String[] args) {
@@ -309,17 +309,17 @@ public class Prak07_24051130002 {
         int pilihan;
 
         do {
-            System.out.println("\n=== DATA DOSEN ===");
-            System.out.println("1. Tambah data di awal");
-            System.out.println("2. Tambah data di akhir");
-            System.out.println("3. Tambah data setelah NIP tertentu");
-            System.out.println("4. Tambah data sebelum NIP tertentu");
+            System.out.println("\n=== DATA BUKU PERSPUSTAKAAN ===");
+            System.out.println("1. Tambah data buku di awal");
+            System.out.println("2. Tambah data buku di akhir");
+            System.out.println("3. Tambah data buku setelah id tertentu");
+            System.out.println("4. Tambah data buku sebelum id tertentu");
             System.out.println("5. Tampilkan maju");
             System.out.println("6. Tampilkan mundur");
-            System.out.println("7. Cari nama");
+            System.out.println("7. Cari judul");
             System.out.println("8. Hapus data pertama");
             System.out.println("9. Hapus data terakhir");
-            System.out.println("10. Hapus data berdasarkan NIP");
+            System.out.println("10. Hapus data berdasarkan id");
             System.out.println("11. Export data ke file");
             System.out.println("12. Import data dari file");
             System.out.println("0. Keluar");
@@ -329,28 +329,28 @@ public class Prak07_24051130002 {
 
             switch (pilihan) {
                 case 1:
-                    String nipAwal = inputNIP(sc);
-                    String namaAwal = inputNama(sc);
-                    list.insertFirst(nipAwal, namaAwal);
+                    String idAwal = inputid(sc);
+                    String judulAwal = inputjudul(sc);
+                    list.insertFirst(idAwal, judulAwal);
                     break;
                 case 2:
-                    String nipAkhir = inputNIP(sc);
-                    String namaAkhir = inputNama(sc);
-                    list.insertLast(nipAkhir, namaAkhir, true);
+                    String idAkhir = inputid(sc);
+                    String judulAkhir = inputjudul(sc);
+                    list.insertLast(idAkhir, judulAkhir, true);
                     break;
                 case 3:
-                    System.out.print("Masukkan NIP acuan: ");
+                    System.out.print("Masukkan id acuan: ");
                     String acuan1 = sc.nextLine();
-                    String nipBaru1 = inputNIP(sc);
-                    String namaBaru1 = inputNama(sc);
-                    list.insertAfter(acuan1, nipBaru1, namaBaru1);
+                    String idBaru1 = inputid(sc);
+                    String judulBaru1 = inputjudul(sc);
+                    list.insertAfter(acuan1, idBaru1, judulBaru1);
                     break;
                 case 4:
-                    System.out.print("Masukkan NIP acuan: ");
+                    System.out.print("Masukkan id acuan: ");
                     String acuan2 = sc.nextLine();
-                    String nipBaru2 = inputNIP(sc);
-                    String namaBaru2 = inputNama(sc);
-                    list.insertBefore(acuan2, nipBaru2, namaBaru2);
+                    String idBaru2 = inputid(sc);
+                    String judulBaru2 = inputjudul(sc);
+                    list.insertBefore(acuan2, idBaru2, judulBaru2);
                     break;
                 case 5:
                     list.tampilMaju();
@@ -359,9 +359,9 @@ public class Prak07_24051130002 {
                     list.tampilMundur();
                     break;
                 case 7:
-                    System.out.print("Masukkan nama yang dicari: ");
-                    String cariNama = sc.nextLine();
-                    list.cariNama(cariNama);
+                    System.out.print("Masukkan judul yang dicari: ");
+                    String carijudul = sc.nextLine();
+                    list.carijudul(carijudul);
                     break;
                 case 8:
                     list.deleteFirst();
@@ -370,19 +370,19 @@ public class Prak07_24051130002 {
                     list.deleteLast();
                     break;
                 case 10:
-                    System.out.print("Masukkan NIP yang ingin dihapus: ");
-                    String nipHapus = sc.nextLine();
-                    list.deleteByNIP(sc, nipHapus);
+                    System.out.print("Masukkan id yang ingin dihapus: ");
+                    String idHapus = sc.nextLine();
+                    list.deleteByid(sc, idHapus);
                     break;
                 case 11:
-                    System.out.print("Masukkan nama file untuk export (cth: data.txt): ");
-                    String namaFileExport = sc.nextLine();
-                    list.exportFile(namaFileExport);
+                    System.out.print("Masukkan judul file untuk export (cth: data.txt): ");
+                    String judulFileExport = sc.nextLine();
+                    list.exportFile(judulFileExport);
                     break;
                 case 12:
-                    System.out.print("Masukkan nama file untuk import (cth: data.txt): ");
-                    String namaFileImport = sc.nextLine();
-                    list.importFile(namaFileImport);
+                    System.out.print("Masukkan judul file untuk import (cth: data.txt): ");
+                    String judulFileImport = sc.nextLine();
+                    list.importFile(judulFileImport);
                     break;
                 case 0:
                     System.out.println("Terima kasih. Program selesai.");
