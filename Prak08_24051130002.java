@@ -52,19 +52,20 @@ class DoubleLink {
     }
 
     public boolean cekid(String id) {
-        Node current = first;
-        while (current != null) {
+        Node current = first; // Mulai dari node pertama
+        while (current != null) { // Selama list tidak kosong
+            // Cek apakah id sudah ada di dalam list
             if (current.id.equals(id)) {
                 System.out.println("id sudah ada!");
-                return true;
+                return true; // id sudah ada, kembalikan true
             }
-            current = current.next;
+            current = current.next; // Pindah ke node berikutnya
         }
-        return false;
+        return false; // id tidak ditemukan, kembalikan false
     }
 
     public void insertFirst(String id, String judul) {
-        if (cekid(id)) {
+        if (cekid(id)) { // Cek apakah id sudah ada
             return;
         }
         Node newNode = new Node(id, judul);
@@ -79,7 +80,7 @@ class DoubleLink {
     }
 
     public void insertLast(String id, String judul, boolean tampilPesan) {
-        if (cekid(id)) {
+        if (cekid(id)) { // Cek apakah id sudah ada
             return;
         }
         Node newNode = new Node(id, judul);
@@ -96,7 +97,7 @@ class DoubleLink {
     }
 
     public void insertAfter(String idAcuan, String idBaru, String judulBaru) {
-        if (cekid(idBaru)) return;
+        if (cekid(idBaru)) return; // Cek apakah id sudah ada
         Node current = first;
         while (current != null) {
             if (current.id.equals(idAcuan)) {
@@ -118,10 +119,10 @@ class DoubleLink {
     }
 
     public void insertBefore(String idAcuan, String idBaru, String judulBaru) {
-        if (cekid(idBaru)) return;
-        Node current = first;
-        while (current != null) {
-            if (current.id.equals(idAcuan)) {
+        if (cekid(idBaru)) return; // Cek apakah id sudah ada
+        Node current = first; // Mulai dari node pertama
+        while (current != null) { // Selama list tidak kosong
+            if (current.id.equals(idAcuan)) { // Jika id acuan ditemukan
                 Node newNode = new Node(idBaru, judulBaru);
                 newNode.next = current;                        // newNode mengarah ke current
                 newNode.previous = current.previous;           // newNode diarahkan dari node sebelum current
@@ -134,17 +135,17 @@ class DoubleLink {
                 System.out.println("Data berhasil ditambahkan sebelum id " + idAcuan);
                 return;
             }
-            current = current.next;
+            current = current.next; // Pindah ke node berikutnya
         }
         System.out.println("id acuan tidak ditemukan!");
     }
     
     public Node deleteFirst() {
-        if (isEmpty()) {
-            System.out.println("List kosong!");
-            return null;
+        if (isEmpty()) { // Cek apakah list kosong
+            System.out.println("Belum ada data.");
+            return null; // Jika kosong, kembalikan null
         }
-        Node temp = first;
+        Node temp = first; // Simpan node pertama untuk dikembalikan
         if (first.next == null) {
             last = null;                                       // last dihapus jika hanya ada satu node
         } else {
@@ -152,12 +153,12 @@ class DoubleLink {
         }
         first = first.next;                                    // first diarahkan ke node kedua
         System.out.println("Data berhasil dihapus di awal.");
-        return temp;
+        return temp;                                   // Kembalikan node yang dihapus
     }    
 
     public Node deleteLast() {
-        if (isEmpty()) {
-            System.out.println("List kosong!");
+        if (isEmpty()) { // Cek apakah list kosong
+            System.out.println("Belum ada data.");
             return null;
         }
         Node temp = last;
@@ -173,7 +174,7 @@ class DoubleLink {
     
 
     public Node deleteByid(Scanner sc, String id) {
-        if (isEmpty()) {
+        if (isEmpty()) { // Cek apakah list kosong
             System.out.println("Belum ada data.");
             return null;
         }
@@ -181,47 +182,47 @@ class DoubleLink {
         String confirm;
         do {
             System.out.print("Yakin ingin menghapus data terakhir? (y/n): ");
-            confirm = sc.next();
-            if (confirm.equalsIgnoreCase("y")) {
-                Node temp = last;
-                if (last.previous == null) {
-                    first = null;
+            confirm = sc.next(); // Minta konfirmasi dari pengguna
+            if (confirm.equalsIgnoreCase("y")) { // Jika pengguna setuju
+                Node temp = last; // Simpan node terakhir untuk dikembalikan
+                if (last.previous == null) { // Jika hanya ada satu node
+                    first = null;               // first dihapus
                 } else {
-                    last.previous.next = null;
+                    last.previous.next = null; // node sebelum last tidak lagi mengarah ke last
                 }
-                last = last.previous;
+                last = last.previous;         // last diarahkan ke node sebelumnya
                 System.out.println("Data berhasil dihapus.");
-                return temp;
-            } else if (confirm.equalsIgnoreCase("n")) {
-                System.out.println("Penghapusan dibatalkan.");
-                return null;
-            } else {
+                return temp;          // Kembalikan node yang dihapus
+            } else if (confirm.equalsIgnoreCase("n")) { // Jika pengguna tidak setuju
+                System.out.println("Penghapusan dibatalkan."); 
+                return null; // Kembalikan null
+            } else { // Jika input tidak valid
                 System.out.println("Input tidak valid. Masukkan 'y' untuk ya atau 'n' untuk tidak.");
             }
-        } while (true);
+        } while (true); // Ulangi sampai input valid
     }
 
     public void tampilMaju() {
-        Node current = first;
-        if (isEmpty()) {
-            System.out.println("List kosong!");
+        Node current = first; // Mulai dari node pertama
+        if (isEmpty()) { // Cek apakah list kosong
+            System.out.println("Belum ada data");
             return;
         }
-        while (current != null) {
-            current.tampil();
-            current = current.next;
+        while (current != null) { // Selama list tidak kosong
+            current.tampil(); // Tampilkan data node saat ini
+            current = current.next; // menampilkan node berikutnya
         }
     }
 
     public void tampilMundur() {
-        Node current = last;
-        if (isEmpty()) {
-            System.out.println("List kosong!");
-            return;
+        Node current = last; // Mulai dari node terakhir
+        if (isEmpty()) { // Cek apakah list kosong
+            System.out.println("Belum ada data");
+            return; // Jika kosong, kembalikan null
         }
-        while (current != null) {
-            current.tampil();
-            current = current.previous;
+        while (current != null) { // Selama list tidak kosong
+            current.tampil(); // Tampilkan data node saat ini
+            current = current.previous; // menampilkan node sebelumnya
         }
     }
 
@@ -229,30 +230,31 @@ class DoubleLink {
         Node current = first;
         boolean found = false;
         while (current != null) {
-            if (current.judul.equalsIgnoreCase(judul)) {
-                
-                System.out.println("ID Buku: " + current.id + ", Judul Buku: " + current.judul);
-                found = true;
-                
+            if (current.judul.toLowerCase().contains(judul.toLowerCase())) {
+                if (!found) { // Jika judul ditemukan untuk pertama kali
+                    System.out.println("Judul ditemukan: ");
+                    found = true; // Set found menjadi true
+                }
+                System.out.println("ID Buku: " + current.id + ", Judul Buku: " + current.judul); 
             }
-            current = current.next;
-            
-        }
-        if (!found) {
-            System.out.println("judul tidak ditemukan!");
+            current = current.next; // Pindah ke node berikutnya
+
+            if (!found) { // Jika judul tidak ditemukan sama sekali
+                System.out.println("judul tidak ditemukan!");
+            }
         }
     }
 
     public void exportFile(String judulfile) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(judulfile))) {
-            Node current = first;
-            while (current != null) {
-                writer.write(current.id + "," + current.judul);
-                writer.newLine();
-                current = current.next;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(judulfile))) { // Gunakan BufferedWriter untuk menulis ke file
+            Node current = first; // Mulai dari node pertama
+            while (current != null) { // Selama list tidak kosong
+                writer.write(current.id + "," + current.judul); // Tulis id dan judul ke file
+                writer.newLine(); // Pindah ke baris baru
+                current = current.next; // Pindah ke node berikutnya
             }
             System.out.println("Data berhasil diekspor ke " + judulfile);
-        } catch (IOException e) {
+        } catch (IOException e) { // Tangani exception jika terjadi kesalahan saat menulis ke file
             System.out.println("Error saat menulis ke file: " + e.getMessage());
         }
     }
@@ -260,22 +262,38 @@ class DoubleLink {
     public void importFile(String judulfile) {
         try (BufferedReader reader = new BufferedReader(new FileReader(judulfile))) {
             String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+            while ((line = reader.readLine()) != null) { // Baca setiap baris dari file
+                String[] parts = line.split(","); // Pisahkan id dan judul berdasarkan koma
                 if (parts.length == 2) {
-                    String id = parts[0].trim();
-                    String judul = parts[1].trim();
-                    insertLast(id, judul, false);
+                    String id = parts[0].trim(); // Ambil id dari bagian pertama
+                    String judul = parts[1].trim(); // Ambil judul dari bagian kedua
+                    insertLast(id, judul, false); // Tambahkan node baru ke akhir list
                 }
             }
             System.out.println("Data berhasil diimpor dari " + judulfile);
         } catch (IOException e) {
-            System.out.println("Error saat membaca file: " + e.getMessage());
+            System.out.println("Error saat membaca file: " + e.getMessage()); // Tangani exception jika terjadi kesalahan saat membaca file
         }
     }
+
+    public Node updateNode(String id, String judul) {
+        Node current = first; // Mulai dari node pertama
+        while (current != null) { // Selama list tidak kosong
+            if (current.id.equals(id)) { // Jika id ditemukan
+                current.judul = judul; // Update judul
+                return current; // Kembalikan node yang diupdate
+            }
+            current = current.next; // Pindah ke node berikutnya
+            System.out.println("Data berhasil diupdate.");
+        }
+        System.out.println("ID tidak ditemukan!"); // Jika id tidak ditemukan, tampilkan pesan
+        // Kembalikan null jika id tidak ditemukan
+        return null;
+    }
+
 }
 
-public class Prak07_24051130002 {
+public class Prak08_24051130002 {
     public static String inputid(Scanner input) {
         String id;
         while (true) {
@@ -295,7 +313,7 @@ public class Prak07_24051130002 {
         while (true) {
             System.out.print("Masukkan judul Buku: ");
             judul = input.nextLine();
-            if (judul.matches("[a-zA-Z\\s]+")) {
+            if (judul.matches("[a-zA-Z\\s\\-]+")) {
                 break;
             } else {
                 System.out.println("judul harus berupa huruf!");
@@ -323,6 +341,7 @@ public class Prak07_24051130002 {
             System.out.println("10. Hapus data berdasarkan id");
             System.out.println("11. Export data ke file");
             System.out.println("12. Import data dari file");
+            System.out.println("13. Update data buku");
             System.out.println("0. Keluar");
             System.out.print("Pilih menu: ");
             pilihan = sc.nextInt();
@@ -384,6 +403,12 @@ public class Prak07_24051130002 {
                     System.out.print("Masukkan judul file untuk import (cth: data.txt): ");
                     String judulFileImport = sc.nextLine();
                     list.importFile(judulFileImport);
+                    break;
+                case 13:
+                    System.out.print("Masukkan id buku yang ingin diupdate: ");
+                    String idUpdate = sc.nextLine();
+                    String judulUpdate = inputjudul(sc);
+                    list.updateNode(idUpdate, judulUpdate);
                     break;
                 case 0:
                     System.out.println("Terima kasih. Program selesai.");
