@@ -309,18 +309,23 @@ public class Prak08_24051130002 {
         return id;
     }
 
-    public static String inputjudul(Scanner input) {
+    public static String inputjudul(Scanner input, String pesan) {
         String judul;
         while (true) {
-            System.out.print("Masukkan judul Buku: ");
+            System.out.print(pesan); // pakai pesan custom di sini
             judul = input.nextLine();
             if (judul.matches("[a-zA-Z\\s\\-]+")) {
                 break;
             } else {
-                System.out.println("judul harus berupa huruf!");
+                System.out.println("Judul harus berupa huruf!");
             }
         }
         return judul;
+    }    
+
+        // Versi default untuk kompatibilitas
+    public static String inputjudul(Scanner input) {
+        return inputjudul(input, "Masukkan judul Buku: ");
     }
 
     public static void main(String[] args) {
@@ -408,7 +413,7 @@ public class Prak08_24051130002 {
                 case 13:
                     System.out.print("Masukkan id buku yang ingin diupdate: ");
                     String idUpdate = sc.nextLine();
-                    String judulUpdate = inputjudul(sc);
+                    String judulUpdate = inputjudul(sc, "Masukkan judul buku(update):");
                     list.updateNode(idUpdate, judulUpdate);
                     break;
                 case 0:
